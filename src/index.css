@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/* Custom font */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap');
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, #fce7f380 1px, transparent 1px),
+    linear-gradient(to bottom, #fce7f380 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+@utility font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+@utility font-body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+* {
+  cursor: none !important;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hide scrollbar */
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; }
