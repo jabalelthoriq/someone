@@ -277,6 +277,7 @@ function LoveFrameCamera() {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(t => t.stop());
       }
+      setPhase('camera');
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: facing, width: { ideal: 720 }, height: { ideal: 720 } },
         audio: false,
@@ -284,10 +285,10 @@ function LoveFrameCamera() {
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        videoRef.current.play().catch(() => {});
       }
-      setPhase('camera');
     } catch (err) {
+      setPhase('idle');
       alert('Tidak bisa membuka kamera. Pastikan izin kamera sudah diberikan.');
     }
   };
@@ -300,6 +301,13 @@ function LoveFrameCamera() {
   };
 
   useEffect(() => () => stopCamera(), []);
+
+  useEffect(() => {
+    if (phase === 'camera' && videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [phase]);
 
   const flipCamera = () => {
     const next = facingMode === 'user' ? 'environment' : 'user';
@@ -840,6 +848,8 @@ export default function App() {
     }
   };
 
+  const slideContainerRef = useRef(null);
+
   const toggleMusic = () => {
     if (isPlaying) { audioRef.current?.pause(); setIsPlaying(false); }
     else { audioRef.current?.play(); setIsPlaying(true); }
@@ -848,12 +858,45 @@ export default function App() {
   useEffect(() => {
     if (!opened) return;
     let startY = 0;
-    const onTouchStart = e => { startY = e.touches[0].clientY; };
-    const onTouchEnd = e => {
-      const diff = startY - e.changedTouches[0].clientY;
-      if (Math.abs(diff) > 60) goTo(currentSlide + (diff > 0 ? 1 : -1));
+    let startX = 0;
+    const onTouchStart = e => {
+      startY = e.touches[0].clientY;
+      startX = e.touches[0].clientX;
     };
-    const onWheel = e => { if (Math.abs(e.deltaY) > 40) goTo(currentSlide + (e.deltaY > 0 ? 1 : -1)); };
+    const onTouchEnd = e => {
+      const diffY = startY - e.changedTouches[0].clientY;
+      const diffX = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diffX) > Math.abs(diffY)) return;
+      if (Math.abs(diffY) < 100) return;
+
+      const container = slideContainerRef.current;
+      if (container) {
+        const isScrollable = container.scrollHeight > container.clientHeight + 15;
+        if (isScrollable) {
+          const isAtTop = container.scrollTop <= 10;
+          const isAtBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 15;
+
+          if (diffY > 0 && !isAtBottom) return;
+          if (diffY < 0 && !isAtTop) return;
+        }
+      }
+      goTo(currentSlide + (diffY > 0 ? 1 : -1));
+    };
+    const onWheel = e => {
+      if (Math.abs(e.deltaY) < 70) return;
+      const container = slideContainerRef.current;
+      if (container) {
+        const isScrollable = container.scrollHeight > container.clientHeight + 15;
+        if (isScrollable) {
+          const isAtTop = container.scrollTop <= 10;
+          const isAtBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 15;
+
+          if (e.deltaY > 0 && !isAtBottom) return;
+          if (e.deltaY < 0 && !isAtTop) return;
+        }
+      }
+      goTo(currentSlide + (e.deltaY > 0 ? 1 : -1));
+    };
     const onKey = e => {
       if (e.key === 'ArrowDown') goTo(currentSlide + 1);
       if (e.key === 'ArrowUp') goTo(currentSlide - 1);
@@ -900,10 +943,11 @@ export default function App() {
 
       <AnimatePresence mode="wait" custom={direction}>
         <motion.div
+          ref={slideContainerRef}
           key={currentSlide} custom={direction} variants={variants}
           initial="enter" animate="center" exit="exit"
           transition={{ duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96] }}
-          className="absolute inset-0 overflow-y-auto"
+          className="absolute inset-0 overflow-y-auto overscroll-contain"
         >
           {renderSlide(SLIDES[currentSlide])}
         </motion.div>
