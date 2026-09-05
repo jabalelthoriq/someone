@@ -3,12 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Music, Pause, Play, X, ChevronLeft, ChevronRight, Download, RefreshCw, Camera } from 'lucide-react';
 
 // ─── TARGET DATE ───────────────────────────────────────────────────
+let targetDateInstance = null;
 function getTargetDate() {
-  // TEST MODE — ganti ke: new Date(now.getFullYear(), 8, 7, 0, 1, 0) untuk versi final
+  if (!targetDateInstance) {
+    targetDateInstance = new Date(Date.now() + 2 * 60 * 1000);
+  }
   const now = new Date();
-  const target = new Date(2026, 8, 5, 23, 26, 30);
-  if (now >= target) return null;
-  return target;
+  if (now >= targetDateInstance) return null;
+  return targetDateInstance;
 }
 
 // ─── FLOATING HEARTS (main bg) ─────────────────────────────────────
