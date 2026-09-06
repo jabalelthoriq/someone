@@ -244,74 +244,30 @@ function Lightbox({ photos, index, onClose, onPrev, onNext }) {
 
 // ─── FRAME OVERLAY (standalone — jangan taruh di dalam component lain) ─────
 function FrameOverlay() {
-  // hearts along top & bottom edges
-  const edgeHearts = ['❤️','🩷','💕','💗','❤️','💖','🩷','💕'];
-  // hearts along left & right edges
-  const sideHearts = ['💗','❤️','🩷','💕','💖'];
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl">
-      {/* Outer thick red border */}
-      <div className="absolute inset-0 border-[10px] border-red-800 rounded-3xl" />
-      {/* Pink inner border */}
-      <div className="absolute inset-[13px] border-[3px] border-pink-300 rounded-2xl" />
-      {/* Dashed white border inside */}
-      <div className="absolute inset-[20px] border-[2px] border-dashed border-white/40 rounded-xl" />
+      {/* Outer elegant deep red border */}
+      <div className="absolute inset-0 border-[8px] border-red-950 rounded-3xl" />
+      {/* Inner fine white border */}
+      <div className="absolute inset-[10px] border-[2px] border-white/80 rounded-2xl" />
 
-      {/* ── Top edge hearts ── */}
-      <div className="absolute top-0 left-0 right-0 flex justify-around items-center px-4 py-[3px]">
-        {edgeHearts.map((h, i) => (
-          <span key={i} style={{ fontSize: 13 + (i % 3) * 3 }} className="leading-none drop-shadow">{h}</span>
-        ))}
-      </div>
+      {/* Subtle corner red hearts */}
+      <div className="absolute top-[14px] left-[14px] text-lg leading-none select-none drop-shadow">❤️</div>
+      <div className="absolute top-[14px] right-[14px] text-lg leading-none select-none drop-shadow">❤️</div>
+      <div className="absolute bottom-[18%] left-[14px] text-lg leading-none select-none drop-shadow">❤️</div>
+      <div className="absolute bottom-[18%] right-[14px] text-lg leading-none select-none drop-shadow">❤️</div>
 
-      {/* ── Bottom edge hearts ── */}
-      <div className="absolute bottom-[18%] left-0 right-0 flex justify-around items-center px-4 py-[3px]">
-        {edgeHearts.slice().reverse().map((h, i) => (
-          <span key={i} style={{ fontSize: 12 + (i % 3) * 3 }} className="leading-none drop-shadow">{h}</span>
-        ))}
-      </div>
+      {/* Top subtle center heart */}
+      <div className="absolute top-[12px] left-1/2 -translate-x-1/2 text-sm leading-none select-none drop-shadow opacity-90">❤️</div>
 
-      {/* ── Left edge hearts (vertical) ── */}
-      <div className="absolute top-8 bottom-[20%] left-0 flex flex-col justify-around items-center w-[22px]">
-        {sideHearts.map((h, i) => (
-          <span key={i} style={{ fontSize: 11 + (i % 2) * 3 }} className="leading-none drop-shadow">{h}</span>
-        ))}
-      </div>
-
-      {/* ── Right edge hearts (vertical) ── */}
-      <div className="absolute top-8 bottom-[20%] right-0 flex flex-col justify-around items-center w-[22px]">
-        {sideHearts.slice().reverse().map((h, i) => (
-          <span key={i} style={{ fontSize: 11 + (i % 2) * 3 }} className="leading-none drop-shadow">{h}</span>
-        ))}
-      </div>
-
-      {/* ── Corner big hearts ── */}
-      <div className="absolute top-[5px] left-[5px] text-2xl leading-none drop-shadow-md">💖</div>
-      <div className="absolute top-[5px] right-[5px] text-2xl leading-none drop-shadow-md">💖</div>
-      <div className="absolute bottom-[19%] left-[5px] text-2xl leading-none drop-shadow-md">💗</div>
-      <div className="absolute bottom-[19%] right-[5px] text-2xl leading-none drop-shadow-md">💗</div>
-
-      {/* ── Sparkle stars scattered ── */}
-      <div className="absolute top-[12%] left-[8%] text-xs leading-none opacity-80">✨</div>
-      <div className="absolute top-[12%] right-[8%] text-xs leading-none opacity-80">✨</div>
-      <div className="absolute top-[40%] left-[4%] text-[10px] leading-none opacity-70">⭐</div>
-      <div className="absolute top-[40%] right-[4%] text-[10px] leading-none opacity-70">⭐</div>
-
-      {/* ── Bottom gradient banner ── */}
-      <div className="absolute bottom-0 left-[13px] right-[13px] rounded-b-2xl overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #9f1239 0%, #be185d 50%, #9f1239 100%)' }}>
-        <div className="py-2 px-3 text-center">
-          <p className="text-white font-black text-[11px] tracking-wide" style={{ fontFamily: 'Playfair Display, serif' }}>
-            💕 Happy Birthday 💕
-          </p>
-          <p className="text-pink-200 text-[8px] mt-0.5">7 September • selalu di hatiku ❤️</p>
-        </div>
-        {/* mini hearts row in banner */}
-        <div className="flex justify-center gap-1 pb-1">
-          {['🩷','❤️','💕','❤️','🩷'].map((h, i) => (
-            <span key={i} className="text-[9px] leading-none">{h}</span>
-          ))}
-        </div>
+      {/* Bottom elegant banner */}
+      <div className="absolute bottom-0 left-[10px] right-[10px] bg-gradient-to-r from-red-950 via-red-900 to-red-950 rounded-b-2xl py-2.5 px-4 text-center border-t border-white/10">
+        <p className="text-white font-bold text-xs tracking-wider" style={{ fontFamily: 'Playfair Display, serif' }}>
+          Happy Birthday ❤️
+        </p>
+        <p className="text-red-200/80 text-[9px] font-light mt-0.5 tracking-wide">
+          7 September • selalu di hatiku
+        </p>
       </div>
     </div>
   );
@@ -403,63 +359,48 @@ function LoveFrameCamera() {
   };
 
   const drawFrameOnCanvas = (ctx, w, h) => {
-    const bw = Math.max(w, h) * 0.035;
-    // Outer red border
-    ctx.strokeStyle = '#9f1239';
+    const bw = Math.max(w, h) * 0.03;
+    // Outer deep red (merah hati) border
+    ctx.strokeStyle = '#450a0a';
     ctx.lineWidth = bw;
     ctx.strokeRect(bw / 2, bw / 2, w - bw, h - bw);
 
-    // Inner pink border
-    ctx.strokeStyle = '#f472b6';
-    ctx.lineWidth = bw * 0.35;
-    const pad = bw * 1.5;
+    // Inner fine white border
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.lineWidth = bw * 0.25;
+    const pad = bw * 1.3;
     ctx.strokeRect(pad, pad, w - pad * 2, h - pad * 2);
 
-    // Inner dashed line
-    ctx.save();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.lineWidth = bw * 0.2;
-    ctx.setLineDash([bw * 0.8, bw * 0.5]);
-    const padDash = bw * 2.2;
-    ctx.strokeRect(padDash, padDash, w - padDash * 2, h - padDash * 2);
-    ctx.restore();
-
-    const drawHeart = (cx, cy, sz, char = '❤️') => {
+    const drawHeart = (cx, cy, sz) => {
       ctx.font = `${sz}px serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(char, cx, cy);
+      ctx.fillText('❤️', cx, cy);
     };
 
-    const cs = Math.min(w, h) * 0.09;
-    const mg = bw * 1.1;
+    const cs = Math.min(w, h) * 0.07;
+    const mg = bw * 1.6;
 
-    // Corner big hearts
-    drawHeart(mg + cs * 0.5, mg + cs * 0.5, cs * 1.2, '💖');
-    drawHeart(w - mg - cs * 0.5, mg + cs * 0.5, cs * 1.2, '💖');
-    drawHeart(mg + cs * 0.5, h - mg - cs * 0.5, cs * 1.2, '💗');
-    drawHeart(w - mg - cs * 0.5, h - mg - cs * 0.5, cs * 1.2, '💗');
+    // Corner red hearts
+    drawHeart(mg, mg, cs);
+    drawHeart(w - mg, mg, cs);
+    drawHeart(mg, h - mg - (h * 0.12), cs);
+    drawHeart(w - mg, h - mg - (h * 0.12), cs);
 
-    // Scattered hearts along edges
-    const topHearts = ['❤️', '🩷', '💕', '💗', '❤️', '💖', '🩷', '💕'];
-    const smallH = cs * 0.55;
-    topHearts.forEach((char, idx) => {
-      const step = w / (topHearts.length + 1);
-      drawHeart(step * (idx + 1), bw * 0.8, smallH, char);
-      drawHeart(step * (idx + 1), h - bw * 0.8, smallH, char);
-    });
+    // Top center heart
+    drawHeart(w / 2, mg, cs * 0.8);
 
-    // Bottom banner
-    const bannerH = h * 0.14;
+    // Bottom elegant banner
+    const bannerH = h * 0.13;
     const bannerY = h - bannerH - pad * 0.5;
-    ctx.globalAlpha = 0.92;
+    ctx.globalAlpha = 0.95;
     const grad = ctx.createLinearGradient(pad, bannerY, w - pad, bannerY + bannerH);
-    grad.addColorStop(0, '#9f1239');
-    grad.addColorStop(0.5, '#be185d');
-    grad.addColorStop(1, '#9f1239');
+    grad.addColorStop(0, '#450a0a');
+    grad.addColorStop(0.5, '#7f1d1d');
+    grad.addColorStop(1, '#450a0a');
     ctx.fillStyle = grad;
     ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(pad, bannerY, w - pad * 2, bannerH, 16);
+    if (ctx.roundRect) ctx.roundRect(pad, bannerY, w - pad * 2, bannerH, 12);
     else ctx.rect(pad, bannerY, w - pad * 2, bannerH);
     ctx.fill();
     ctx.globalAlpha = 1;
@@ -467,7 +408,7 @@ function LoveFrameCamera() {
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = `bold ${h * 0.045}px Georgia, serif`;
+    ctx.font = `bold ${h * 0.042}px Georgia, serif`;
     ctx.fillText('💕 Happy Birthday 💕', w / 2, bannerY + bannerH * 0.38);
 
     ctx.fillStyle = '#fbcfe8';
