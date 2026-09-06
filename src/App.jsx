@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Music, Pause, Play, X, ChevronLeft, ChevronRight, Download, RefreshCw, Camera } from 'lucide-react';
 
 // ─── TARGET DATE ───────────────────────────────────────────────────
-// ✅ Set waktu target: 6 September 2026, pukul 16:22 WIB (UTC+7)
-const TARGET_TIME = new Date('2026-09-06T16:35:00+07:00');
+// ✅ Set waktu target: 7 September 2026, pukul 00:01 MYT (Zona Waktu Malaysia, UTC+8)
+const TARGET_TIME = new Date('2026-09-06T20:03:00+08:00');
 
 function getTargetDate() {
   const now = new Date();
