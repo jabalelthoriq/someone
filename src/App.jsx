@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Music, Pause, Play, X, ChevronLeft, ChevronRight, Download, RefreshCw, Camera } from 'lucide-react';
+import { toJpeg } from 'html-to-image';
 
 // ─── TARGET DATE ───────────────────────────────────────────────────
 // ✅ Set waktu target: 7 September 2026, pukul 00:01 MYT (Zona Waktu Malaysia, UTC+8)
-const TARGET_TIME = new Date('2026-09-06T20:03:00+08:00');
+const TARGET_TIME = new Date('2026-09-06T20:15:00+08:00');
 
 function getTargetDate() {
   const now = new Date();
@@ -307,6 +308,7 @@ function LoveFrameCamera() {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const canvasRef = useRef(null);
+  const previewRef = useRef(null);
 
   const startCamera = async (facing = facingMode) => {
     try {
@@ -382,154 +384,34 @@ function LoveFrameCamera() {
     startCamera(facingMode);
   };
 
-  const draw3DHeart = (ctx, cx, cy, sz) => {
-    ctx.save();
-    ctx.translate(cx, cy);
-    const scale = sz / 40;
-    ctx.scale(scale, scale);
-
-    // Left half (Dark Red)
-    ctx.beginPath();
-    ctx.moveTo(0, -14);
-    ctx.bezierCurveTo(-7, -24, -20, -20, -20, -8);
-    ctx.bezierCurveTo(-20, 4, -7, 12, 0, 20);
-    ctx.closePath();
-    ctx.fillStyle = '#bd1c24';
-    ctx.fill();
-
-    // Right half (Light Red)
-    ctx.beginPath();
-    ctx.moveTo(0, -14);
-    ctx.bezierCurveTo(7, -24, 20, -20, 20, -8);
-    ctx.bezierCurveTo(20, 4, 7, 12, 0, 20);
-    ctx.closePath();
-    ctx.fillStyle = '#ea3840';
-    ctx.fill();
-
-    ctx.restore();
-  };
-
-  const drawDottedHeart = (ctx, cx, cy, sz) => {
-    ctx.save();
-    ctx.translate(cx, cy);
-    const scale = sz / 44;
-    ctx.scale(scale, scale);
-
-    // Red Heart Base
-    ctx.beginPath();
-    ctx.moveTo(0, -14);
-    ctx.bezierCurveTo(-7, -24, -22, -20, -22, -7);
-    ctx.bezierCurveTo(-22, 6, -7, 13, 0, 22);
-    ctx.bezierCurveTo(7, 13, 22, 6, 22, -7);
-    ctx.bezierCurveTo(22, -20, 7, -24, 0, -14);
-    ctx.closePath();
-    ctx.fillStyle = '#ea3840';
-    ctx.fill();
-
-    // Inner Dotted White Line
-    ctx.beginPath();
-    ctx.moveTo(0, -11);
-    ctx.bezierCurveTo(-5, -19, -17, -16, -17, -6);
-    ctx.bezierCurveTo(-17, 4, -5, 10, 0, 17);
-    ctx.bezierCurveTo(5, 10, 17, 4, 17, -6);
-    ctx.bezierCurveTo(17, -16, 5, -19, 0, -11);
-    ctx.closePath();
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 2.5;
-    ctx.setLineDash([3, 2.5]);
-    ctx.stroke();
-
-    ctx.restore();
-  };
-
-  const drawFrameOnCanvas = (ctx, w, h) => {
-    const wx = w * 0.07;
-    const wy = h * 0.07;
-    const ww = w * 0.86;
-    const wh = h * 0.71;
-
-    // 1. Polaroid White Bars ON TOP of full 1:1 photo (matching web layout)
-    ctx.fillStyle = '#f8f9fa';
-    // Top bar
-    ctx.fillRect(0, 0, w, wy);
-    // Left bar
-    ctx.fillRect(0, wy, wx, wh);
-    // Right bar
-    ctx.fillRect(wx + ww, wy, wx, wh);
-    // Bottom chin bar
-    ctx.fillRect(0, wy + wh, w, h - (wy + wh));
-
-    // 2. Subtle gray horizontal divider lines
-    ctx.strokeStyle = 'rgba(209, 213, 219, 0.5)';
-    ctx.lineWidth = Math.max(1, w * 0.0015);
-    ctx.beginPath();
-    ctx.moveTo(0, wy);
-    ctx.lineTo(w, wy);
-    ctx.moveTo(0, wy + wh);
-    ctx.lineTo(w, wy + wh);
-    ctx.stroke();
-
-    // 3. Inner gray outline around photo window
-    ctx.strokeStyle = '#9ca3af';
-    ctx.lineWidth = Math.max(2, w * 0.0035);
-    ctx.strokeRect(wx, wy, ww, wh);
-
-    // 4. Polaroid Bottom Text (matching web typography and alignment)
-    const chinY = wy + wh;
-    const chinH = h - chinY;
-
-    ctx.fillStyle = '#ea3840';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'top';
-    ctx.font = `900 ${h * 0.046}px Georgia, serif`;
-    ctx.fillText('Happy Birthday', w * 0.06, chinY + chinH * 0.28);
-
-    ctx.fillStyle = '#ea3840';
-    ctx.font = `600 ${h * 0.026}px Arial, sans-serif`;
-    ctx.fillText('7 September 2026 • selalu di hatiku', w * 0.06, chinY + chinH * 0.62);
-
-    // 5. Top-Left 3D Hearts (matching web position)
-    draw3DHeart(ctx, w * 0.045, h * 0.045, w * 0.08);
-    draw3DHeart(ctx, w * 0.12, h * 0.045, w * 0.14);
-
-    // 6. Bottom-Right Dotted Hearts (matching web position)
-    drawDottedHeart(ctx, w * 0.86, h * 0.83, w * 0.22);
-    drawDottedHeart(ctx, w * 0.72, h * 0.87, w * 0.13);
-  };
-
-  const handleDownload = () => {
-    if (!photoData) return;
+  const handleDownload = async () => {
+    if (!photoData || !previewRef.current) return;
     setDownloading(true);
-    const canvas = canvasRef.current;
-    const img = new Image();
-    img.onload = () => {
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      const ctx = canvas.getContext('2d');
-      // Draw full 1:1 photo first
-      ctx.drawImage(img, 0, 0);
-      // Draw Polaroid frame ON TOP of full photo (matching web preview overlay)
-      drawFrameOnCanvas(ctx, canvas.width, canvas.height);
+    try {
+      const dataUrl = await toJpeg(previewRef.current, {
+        quality: 0.95,
+        pixelRatio: 3,
+        cacheBust: true,
+      });
 
-      canvas.toBlob(blob => {
-        if (!blob) { setDownloading(false); return; }
-        const url = URL.createObjectURL(blob);
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-        if (isIOS || isSafari) {
-          setSavedUrl(url);
-        } else {
-          const link = document.createElement('a');
-          link.href = url; link.download = 'birthday-love-frame.jpg';
-          document.body.appendChild(link); link.click(); document.body.removeChild(link);
-          setTimeout(() => URL.revokeObjectURL(url), 3000);
-        }
-        setDownloading(false);
-      }, 'image/jpeg', 0.92);
-    };
-    img.onerror = () => setDownloading(false);
-    img.src = photoData;
+      if (isIOS || isSafari) {
+        setSavedUrl(dataUrl);
+      } else {
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = 'birthday-love-frame.jpg';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (err) {
+      console.error('Download error:', err);
+    } finally {
+      setDownloading(false);
+    }
   };
 
   // iOS save modal
@@ -594,7 +476,7 @@ function LoveFrameCamera() {
     <div className="w-full">
       <canvas ref={canvasRef} className="hidden" />
       <Pop delay={0}>
-        <div className="relative overflow-hidden shadow-2xl bg-black" style={{ aspectRatio: '1/1' }}>
+        <div ref={previewRef} className="relative overflow-hidden shadow-2xl bg-black" style={{ aspectRatio: '1/1' }}>
           <img src={photoData} alt="preview" className="w-full h-full object-cover" />
           <FrameOverlay />
         </div>
