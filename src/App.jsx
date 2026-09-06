@@ -245,29 +245,53 @@ function Lightbox({ photos, index, onClose, onPrev, onNext }) {
 // ─── FRAME OVERLAY (standalone — jangan taruh di dalam component lain) ─────
 function FrameOverlay() {
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl">
-      {/* Outer elegant deep red border */}
-      <div className="absolute inset-0 border-[8px] border-red-950 rounded-3xl" />
-      {/* Inner fine white border */}
-      <div className="absolute inset-[10px] border-[2px] border-white/80 rounded-2xl" />
-
-      {/* Subtle corner red hearts */}
-      <div className="absolute top-[14px] left-[14px] text-lg leading-none select-none drop-shadow">❤️</div>
-      <div className="absolute top-[14px] right-[14px] text-lg leading-none select-none drop-shadow">❤️</div>
-      <div className="absolute bottom-[18%] left-[14px] text-lg leading-none select-none drop-shadow">❤️</div>
-      <div className="absolute bottom-[18%] right-[14px] text-lg leading-none select-none drop-shadow">❤️</div>
-
-      {/* Top subtle center heart */}
-      <div className="absolute top-[12px] left-1/2 -translate-x-1/2 text-sm leading-none select-none drop-shadow opacity-90">❤️</div>
-
-      {/* Bottom elegant banner */}
-      <div className="absolute bottom-0 left-[10px] right-[10px] bg-gradient-to-r from-red-950 via-red-900 to-red-950 rounded-b-2xl py-2.5 px-4 text-center border-t border-white/10">
-        <p className="text-white font-bold text-xs tracking-wider" style={{ fontFamily: 'Playfair Display, serif' }}>
-          Happy Birthday ❤️
+    <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+      {/* Polaroid Outer White Bars */}
+      <div className="absolute top-0 left-0 right-0 h-[7%] bg-[#f8f9fa] border-b border-gray-300/40" />
+      <div className="absolute top-[7%] bottom-[22%] left-0 w-[7%] bg-[#f8f9fa]" />
+      <div className="absolute top-[7%] bottom-[22%] right-0 w-[7%] bg-[#f8f9fa]" />
+      
+      {/* Polaroid Bottom White Chin with Text */}
+      <div className="absolute bottom-0 left-0 right-0 h-[22%] bg-[#f8f9fa] flex flex-col justify-center px-6 border-t border-gray-300/50">
+        <h3 className="text-[#ea3840] font-black text-xl tracking-wide leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
+          Happy Birthday
+        </h3>
+        <p className="text-[#ea3840] text-xs font-semibold tracking-wide mt-1">
+          7 September 2026 • selalu di hatiku
         </p>
-        <p className="text-red-200/80 text-[9px] font-light mt-0.5 tracking-wide">
-          7 September • selalu di hatiku
-        </p>
+      </div>
+
+      {/* Inner Photo Window Gray Outline */}
+      <div className="absolute top-[7%] bottom-[22%] left-[7%] right-[7%] border-2 border-gray-400/80 pointer-events-none" />
+
+      {/* Top-Left 3D Red Hearts (folded paper style) */}
+      <div className="absolute top-[1.5%] left-[1.5%] z-20 flex items-center pointer-events-none">
+        {/* Small 3D Heart */}
+        <svg className="w-8 h-8 -mr-2 drop-shadow-md" viewBox="-24 -24 48 48">
+          <path d="M 0,-14 C -7,-24 -20,-20 -20,-8 C -20,4 -7,12 0,20 Z" fill="#bd1c24" />
+          <path d="M 0,-14 C 7,-24 20,-20 20,-8 C 20,4 7,12 0,20 Z" fill="#ea3840" />
+        </svg>
+        {/* Big 3D Heart */}
+        <svg className="w-14 h-14 drop-shadow-lg" viewBox="-24 -24 48 48">
+          <path d="M 0,-14 C -7,-24 -20,-20 -20,-8 C -20,4 -7,12 0,20 Z" fill="#bd1c24" />
+          <path d="M 0,-14 C 7,-24 20,-20 20,-8 C 20,4 7,12 0,20 Z" fill="#ea3840" />
+        </svg>
+      </div>
+
+      {/* Bottom-Right Dotted Red Hearts */}
+      <div className="absolute bottom-[8%] right-[1%] z-20 flex items-end pointer-events-none">
+        {/* Big Dotted Heart */}
+        <svg className="w-22 h-22 drop-shadow-lg" viewBox="-26 -26 52 52">
+          <path d="M 0,-14 C -7,-24 -22,-20 -22,-7 C -22,6 -7,13 0,22 C 7,13 22,6 22,-7 C 22,-20 7,-24 0,-14 Z" fill="#ea3840" />
+          <path d="M 0,-11 C -5,-19 -17,-16 -17,-6 C -17,4 -5,10 0,17 C 5,10 17,4 17,-6 C 17,-16 5,-19 0,-11 Z" 
+                fill="none" stroke="white" strokeWidth="2.5" strokeDasharray="3 2.5" />
+        </svg>
+        {/* Small Dotted Heart */}
+        <svg className="w-13 h-13 -ml-4 drop-shadow-md" viewBox="-26 -26 52 52">
+          <path d="M 0,-14 C -7,-24 -22,-20 -22,-7 C -22,6 -7,13 0,22 C 7,13 22,6 22,-7 C 22,-20 7,-24 0,-14 Z" fill="#ea3840" />
+          <path d="M 0,-11 C -5,-19 -17,-16 -17,-6 C -17,4 -5,10 0,17 C 5,10 17,4 17,-6 C 17,-16 5,-19 0,-11 Z" 
+                fill="none" stroke="white" strokeWidth="2.5" strokeDasharray="3 2.5" />
+        </svg>
       </div>
     </div>
   );
@@ -358,62 +382,111 @@ function LoveFrameCamera() {
     startCamera(facingMode);
   };
 
-  const drawFrameOnCanvas = (ctx, w, h) => {
-    const bw = Math.max(w, h) * 0.03;
-    // Outer deep red (merah hati) border
-    ctx.strokeStyle = '#450a0a';
-    ctx.lineWidth = bw;
-    ctx.strokeRect(bw / 2, bw / 2, w - bw, h - bw);
+  const draw3DHeart = (ctx, cx, cy, sz) => {
+    ctx.save();
+    ctx.translate(cx, cy);
+    const scale = sz / 40;
+    ctx.scale(scale, scale);
 
-    // Inner fine white border
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
-    ctx.lineWidth = bw * 0.25;
-    const pad = bw * 1.3;
-    ctx.strokeRect(pad, pad, w - pad * 2, h - pad * 2);
-
-    const drawHeart = (cx, cy, sz) => {
-      ctx.font = `${sz}px serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('❤️', cx, cy);
-    };
-
-    const cs = Math.min(w, h) * 0.07;
-    const mg = bw * 1.6;
-
-    // Corner red hearts
-    drawHeart(mg, mg, cs);
-    drawHeart(w - mg, mg, cs);
-    drawHeart(mg, h - mg - (h * 0.12), cs);
-    drawHeart(w - mg, h - mg - (h * 0.12), cs);
-
-    // Top center heart
-    drawHeart(w / 2, mg, cs * 0.8);
-
-    // Bottom elegant banner
-    const bannerH = h * 0.13;
-    const bannerY = h - bannerH - pad * 0.5;
-    ctx.globalAlpha = 0.95;
-    const grad = ctx.createLinearGradient(pad, bannerY, w - pad, bannerY + bannerH);
-    grad.addColorStop(0, '#450a0a');
-    grad.addColorStop(0.5, '#7f1d1d');
-    grad.addColorStop(1, '#450a0a');
-    ctx.fillStyle = grad;
+    // Left half (Dark Red)
     ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(pad, bannerY, w - pad * 2, bannerH, 12);
-    else ctx.rect(pad, bannerY, w - pad * 2, bannerH);
+    ctx.moveTo(0, -14);
+    ctx.bezierCurveTo(-7, -24, -20, -20, -20, -8);
+    ctx.bezierCurveTo(-20, 4, -7, 12, 0, 20);
+    ctx.closePath();
+    ctx.fillStyle = '#bd1c24';
     ctx.fill();
-    ctx.globalAlpha = 1;
 
-    ctx.fillStyle = '#ffffff';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.font = `bold ${h * 0.042}px Georgia, serif`;
-    ctx.fillText('💕 Happy Birthday 💕', w / 2, bannerY + bannerH * 0.38);
+    // Right half (Light Red)
+    ctx.beginPath();
+    ctx.moveTo(0, -14);
+    ctx.bezierCurveTo(7, -24, 20, -20, 20, -8);
+    ctx.bezierCurveTo(20, 4, 7, 12, 0, 20);
+    ctx.closePath();
+    ctx.fillStyle = '#ea3840';
+    ctx.fill();
 
-    ctx.fillStyle = '#fbcfe8';
-    ctx.font = `${h * 0.028}px Arial, sans-serif`;
-    ctx.fillText('7 September  •  selalu di hatiku ❤️', w / 2, bannerY + bannerH * 0.72);
+    ctx.restore();
+  };
+
+  const drawDottedHeart = (ctx, cx, cy, sz) => {
+    ctx.save();
+    ctx.translate(cx, cy);
+    const scale = sz / 44;
+    ctx.scale(scale, scale);
+
+    // Red Heart Base
+    ctx.beginPath();
+    ctx.moveTo(0, -14);
+    ctx.bezierCurveTo(-7, -24, -22, -20, -22, -7);
+    ctx.bezierCurveTo(-22, 6, -7, 13, 0, 22);
+    ctx.bezierCurveTo(7, 13, 22, 6, 22, -7);
+    ctx.bezierCurveTo(22, -20, 7, -24, 0, -14);
+    ctx.closePath();
+    ctx.fillStyle = '#ea3840';
+    ctx.fill();
+
+    // Inner Dotted White Line
+    ctx.beginPath();
+    ctx.moveTo(0, -11);
+    ctx.bezierCurveTo(-5, -19, -17, -16, -17, -6);
+    ctx.bezierCurveTo(-17, 4, -5, 10, 0, 17);
+    ctx.bezierCurveTo(5, 10, 17, 4, 17, -6);
+    ctx.bezierCurveTo(17, -16, 5, -19, 0, -11);
+    ctx.closePath();
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([3, 2.5]);
+    ctx.stroke();
+
+    ctx.restore();
+  };
+
+  const drawFrameOnCanvas = (ctx, w, h) => {
+    // 1. Temporarily save original captured photo content
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = w;
+    tempCanvas.height = h;
+    const tempCtx = tempCanvas.getContext('2d');
+    tempCtx.drawImage(ctx.canvas, 0, 0);
+
+    // 2. Clear canvas and fill with Polaroid white background
+    ctx.fillStyle = '#f8f9fa';
+    ctx.fillRect(0, 0, w, h);
+
+    // 3. Draw photo into inner window
+    const wx = w * 0.07;
+    const wy = h * 0.07;
+    const ww = w * 0.86;
+    const wh = h * 0.71;
+    ctx.drawImage(tempCanvas, 0, 0, w, h, wx, wy, ww, wh);
+
+    // 4. Inner gray outline around photo
+    ctx.strokeStyle = '#9ca3af';
+    ctx.lineWidth = Math.max(2, w * 0.0035);
+    ctx.strokeRect(wx, wy, ww, wh);
+
+    // 5. Polaroid Bottom Text
+    const chinY = wy + wh;
+    const chinH = h - chinY;
+
+    ctx.fillStyle = '#ea3840';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.font = `900 ${h * 0.048}px Georgia, serif`;
+    ctx.fillText('Happy Birthday', wx + w * 0.01, chinY + chinH * 0.28);
+
+    ctx.fillStyle = '#ea3840';
+    ctx.font = `600 ${h * 0.026}px Arial, sans-serif`;
+    ctx.fillText('7 September 2026 • selalu di hatiku', wx + w * 0.01, chinY + chinH * 0.60);
+
+    // 6. Top-Left 3D Hearts (shifted inside slightly)
+    draw3DHeart(ctx, wx * 0.8, wy * 0.9, w * 0.07);
+    draw3DHeart(ctx, wx * 1.8, wy * 0.8, w * 0.13);
+
+    // 7. Bottom-Right Dotted Hearts (shifted inside slightly)
+    drawDottedHeart(ctx, w - wx * 0.7, wy + wh - h * 0.01, w * 0.17);
+    drawDottedHeart(ctx, w - wx * 1.8, wy + wh + h * 0.04, w * 0.10);
   };
 
   const handleDownload = () => {
@@ -476,7 +549,7 @@ function LoveFrameCamera() {
           <Camera size={26} className="text-white" />
         </div>
         <div className="text-center">
-          <p className="font-bold text-red-900 text-sm">Ambil Foto dengan Frame Love</p>
+          <p className="font-bold text-red-900 text-sm">Ambil Foto</p>
           <p className="text-xs font-light text-red-400 mt-0.5">Klik untuk buka kamera</p>
         </div>
       </motion.button>
@@ -486,7 +559,7 @@ function LoveFrameCamera() {
   if (phase === 'camera') return (
     <div className="w-full">
       <canvas ref={canvasRef} className="hidden" />
-      <div className="relative rounded-3xl overflow-hidden bg-black shadow-2xl" style={{ aspectRatio: '1/1' }}>
+      <div className="relative overflow-hidden bg-black shadow-2xl" style={{ aspectRatio: '1/1' }}>
         <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover"
           style={{ transform: facingMode === 'user' ? 'scaleX(-1)' : 'none' }} />
         <FrameOverlay />
@@ -512,7 +585,7 @@ function LoveFrameCamera() {
     <div className="w-full">
       <canvas ref={canvasRef} className="hidden" />
       <Pop delay={0}>
-        <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-black" style={{ aspectRatio: '1/1' }}>
+        <div className="relative overflow-hidden shadow-2xl bg-black" style={{ aspectRatio: '1/1' }}>
           <img src={photoData} alt="preview" className="w-full h-full object-cover" />
           <FrameOverlay />
         </div>
