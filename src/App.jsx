@@ -584,10 +584,21 @@ function GreetingSlide() {
 
       <div className="px-6 -mt-8 mb-6 flex-shrink-0">
         <div className="flex gap-3 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
-          {['/image/foto2.jpg', '/image/foto3.jpg', '/image/foto4.jpg', '/image/foto5.jpg'].map((src, i) => (
-            <Pop key={i} delay={0.08 + i * 0.1}>
+          {[
+            '/image/foto2.jpg',
+            '/image/foto3.jpg',
+            '/image/foto4.jpg',
+            '/image/foto5.jpg',
+            '/image/foto14.jpg',
+            '/image/foto15.jpg',
+            '/image/foto16.jpg',
+            '/image/foto17.jpg',
+            '/image/foto18.jpg',
+            '/image/foto19.jpg',
+          ].map((src, i) => (
+            <Pop key={i} delay={0.08 + i * 0.06}>
               <div className="w-36 h-44 rounded-3xl overflow-hidden shadow-2xl border-2 border-white flex-shrink-0"
-                style={{ transform: `rotate(${[-2, 1, -1, 2][i]}deg)` }}>
+                style={{ transform: `rotate(${[-2, 1, -1, 2, -1, 2, -2, 1, -1, 2][i]}deg)` }}>
                 <img src={src} onError={safeImg} alt="" className="w-full h-full object-cover" />
               </div>
             </Pop>
@@ -845,7 +856,7 @@ export default function App() {
   const handleOpen = () => {
     setOpened(true);
     setCurrentSlide(1);
-    if (audioRef.current && !isPlaying) {
+    if (audioRef.current) {
       audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
     }
   };
