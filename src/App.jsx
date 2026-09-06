@@ -5,7 +5,7 @@ import { toJpeg } from 'html-to-image';
 
 // ─── TARGET DATE ───────────────────────────────────────────────────
 // ✅ Set waktu target: 7 September 2026, pukul 00:01 MYT (Zona Waktu Malaysia, UTC+8)
-const TARGET_TIME = new Date('2026-09-06T20:15:00+08:00');
+const TARGET_TIME = new Date('2026-09-07T00:01:00+08:00');
 
 function getTargetDate() {
   const now = new Date();
