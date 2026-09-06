@@ -185,8 +185,8 @@ const PHOTOS = [
   { src: '/image/foto7.jpg', caption: 'Endut yang cantik' },
   { src: '/image/foto8.jpg', caption: 'Mukbang bersama endut' },
   { src: '/image/foto10.jpg', caption: 'Foto dengan endut' },
-  { src: '/image/foto9.jpg', caption: 'Bukber dengan endut' },
   { src: '/image/foto11.jpg', caption: 'Selalu di hatiku' },
+  { src: '/image/foto9.jpg', caption: 'Bukber dengan endut' },
 ];
 const FALLBACK = 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=600&auto=format&fit=crop';
 function safeImg(e) { e.target.onerror = null; e.target.src = FALLBACK; }
@@ -622,13 +622,13 @@ function GreetingSlide() {
 // SLIDE 2 – LETTER
 // ═══════════════════════════════════════════════
 function LetterSlide() {
-  const paragraphs = [
-    { text: 'Aloo, endut yang selalu buat aku ovt', style: 'italic' },
-    { text: 'Di hari ulang tahunmu ini, aku ingin kamu tahu betapa berartinya kehadiranmu di hidupku. Kamu adalah cahaya yang selalu bersinar, bahkan di hari-hari paling mendung sekalipun.', style: 'normal' },
-    { text: 'Terima kasih sudah selalu jadi dirimu sendiri. Selalu jujur, selalu hangat, dan selalu membuat setiap momen terasa lebih berarti. Dunia ini jauh lebih indah karena ada kamu.', style: 'normal' },
-    { text: 'Semoga di usiamu yang baru ini, semua impian yang selama ini kamu simpan bisa pelan-pelan jadi nyata. Kamu layak mendapatkan yang terbaik dari hidup ini.', style: 'normal' },
-    { text: 'Dengan penuh kasih sayang — dariku, selalu. ❤️', style: 'signature' },
-  ];
+ const paragraphs = [
+  { text: 'Aloo, endut kesayangan yang suka banget bikin aku ovt...', style: 'italic' },
+  { text: 'Selamat ulang tahun, Sayangkuu. Terima kasih ya sudah seluas dan sesabar itu menghadapiku sampai detik ini. Kehadiran dan rasa sabarmu selalu jadi tempat paling hangat buat aku, bikin segalanya terasa jauh lebih indah.', style: 'normal' },
+  { text: 'Terima kasih sudah selalu jadi dirimu sendiri—yang jujur, comel, dan selalu tahu cara bikin tiap momen sederhana terasa lebih berarti. Dunia ini jauh lebih berwarna karena ada endutkuu.', style: 'normal' },
+  { text: 'Aku berdoa semoga semua mimpi manis yang pelan-pelan endut simpan bisa segera terwujud satu per satu. Endut berhak mendapatkan semua kebahagiaan terbaik di dunia ini.', style: 'normal' },
+  { text: 'Dengan seluruh kasih sayangku — endut, yang selalu mencintaimu. ❤️', style: 'signature' },
+];
   return (
     <div className="min-h-[100dvh] flex flex-col bg-gradient-to-b from-white to-red-50">
       <Pop delay={0} className="relative h-[45vmax] max-h-[50vh] flex-shrink-0 overflow-hidden">
@@ -770,7 +770,7 @@ function ClosingSlide({ isPlaying, toggleMusic }) {
         </Pop>
         <Pop delay={0.19}>
           <p className="text-red-200 text-[13px] font-light leading-relaxed mb-5 max-w-xs">
-            Semoga hari ini menjadi hari yang paling berkesan. Kamu layak mendapatkan semua kebahagiaan di dunia ini. ❤️
+            Semoga hari ini menjadi hari yang paling berkesan. semoga endut bahagia selamanyaa. ❤️
           </p>
         </Pop>
 
