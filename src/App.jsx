@@ -443,50 +443,60 @@ function LoveFrameCamera() {
   };
 
   const drawFrameOnCanvas = (ctx, w, h) => {
-    // 1. Temporarily save original captured photo content
+    // 1. Temporarily save original captured photo content (1:1 full resolution)
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = w;
     tempCanvas.height = h;
     const tempCtx = tempCanvas.getContext('2d');
     tempCtx.drawImage(ctx.canvas, 0, 0);
 
-    // 2. Clear canvas and fill with Polaroid white background
+    // 2. Clear canvas and fill with Polaroid white background (#f8f9fa)
     ctx.fillStyle = '#f8f9fa';
     ctx.fillRect(0, 0, w, h);
 
-    // 3. Draw photo into inner window
+    // 3. Draw photo into inner window (exact same 1:1 sub-crop as live screen overlay)
     const wx = w * 0.07;
     const wy = h * 0.07;
     const ww = w * 0.86;
     const wh = h * 0.71;
-    ctx.drawImage(tempCanvas, 0, 0, w, h, wx, wy, ww, wh);
+    ctx.drawImage(tempCanvas, wx, wy, ww, wh, wx, wy, ww, wh);
 
-    // 4. Inner gray outline around photo
+    // 4. Subtle gray border line above chin and below top bar
+    ctx.strokeStyle = 'rgba(209, 213, 219, 0.5)';
+    ctx.lineWidth = Math.max(1, w * 0.0015);
+    ctx.beginPath();
+    ctx.moveTo(0, wy);
+    ctx.lineTo(w, wy);
+    ctx.moveTo(0, wy + wh);
+    ctx.lineTo(w, wy + wh);
+    ctx.stroke();
+
+    // 5. Inner gray outline around photo window
     ctx.strokeStyle = '#9ca3af';
     ctx.lineWidth = Math.max(2, w * 0.0035);
     ctx.strokeRect(wx, wy, ww, wh);
 
-    // 5. Polaroid Bottom Text
+    // 6. Polaroid Bottom Text (matching typography and alignment)
     const chinY = wy + wh;
     const chinH = h - chinY;
 
     ctx.fillStyle = '#ea3840';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
-    ctx.font = `900 ${h * 0.048}px Georgia, serif`;
-    ctx.fillText('Happy Birthday', wx + w * 0.01, chinY + chinH * 0.28);
+    ctx.font = `900 ${h * 0.046}px Georgia, serif`;
+    ctx.fillText('Happy Birthday', w * 0.06, chinY + chinH * 0.28);
 
     ctx.fillStyle = '#ea3840';
     ctx.font = `600 ${h * 0.026}px Arial, sans-serif`;
-    ctx.fillText('7 September 2026 • selalu di hatiku', wx + w * 0.01, chinY + chinH * 0.60);
+    ctx.fillText('7 September 2026 • selalu di hatiku', w * 0.06, chinY + chinH * 0.62);
 
-    // 6. Top-Left 3D Hearts (shifted inside slightly)
-    draw3DHeart(ctx, wx * 0.8, wy * 0.9, w * 0.07);
-    draw3DHeart(ctx, wx * 1.8, wy * 0.8, w * 0.13);
+    // 7. Top-Left 3D Hearts (exact matching positions as screen overlay)
+    draw3DHeart(ctx, w * 0.045, h * 0.045, w * 0.08);
+    draw3DHeart(ctx, w * 0.12, h * 0.045, w * 0.14);
 
-    // 7. Bottom-Right Dotted Hearts (shifted inside slightly)
-    drawDottedHeart(ctx, w - wx * 0.7, wy + wh - h * 0.01, w * 0.17);
-    drawDottedHeart(ctx, w - wx * 1.8, wy + wh + h * 0.04, w * 0.10);
+    // 8. Bottom-Right Dotted Hearts (exact matching positions as screen overlay)
+    drawDottedHeart(ctx, w * 0.86, h * 0.83, w * 0.22);
+    drawDottedHeart(ctx, w * 0.72, h * 0.87, w * 0.13);
   };
 
   const handleDownload = () => {
