@@ -150,7 +150,7 @@ function CountdownPage({ onUnlock, audioRef }) {
         <div className="relative z-10 text-center px-6">
           <div className="text-7xl mb-5">❤️</div>
           <p className="text-red-200 text-[11px] tracking-[0.4em] uppercase mb-2 font-medium">
-            Menunggu hari yang ditunggu
+            Menunggu hari endutt yang ditunggu
           </p>
           <h1 className="text-white text-4xl font-black mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>
             7 September
@@ -182,10 +182,10 @@ function CountdownPage({ onUnlock, audioRef }) {
 
 // ─── PHOTO UTILS ───────────────────────────────────────────────────
 const PHOTOS = [
-  { src: '/image/foto7.jpg', caption: 'Momen yang indah' },
-  { src: '/image/foto8.jpg', caption: 'Kenangan bersama' },
-  { src: '/image/foto9.jpg', caption: 'Senyum yang selalu kurindukan' },
-  { src: '/image/foto10.jpg', caption: 'Hari yang tak terlupakan' },
+  { src: '/image/foto7.jpg', caption: 'Endut yang cantik' },
+  { src: '/image/foto8.jpg', caption: 'Mukbang bersama endut' },
+  { src: '/image/foto10.jpg', caption: 'Foto dengan endut' },
+  { src: '/image/foto9.jpg', caption: 'Bukber dengan endut' },
   { src: '/image/foto11.jpg', caption: 'Selalu di hatiku' },
 ];
 const FALLBACK = 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=600&auto=format&fit=crop';
@@ -257,7 +257,7 @@ function FrameOverlay() {
       </div>
       <div className="absolute bottom-0 left-[11px] right-[11px] bg-gradient-to-r from-red-900/90 to-red-800/90 rounded-b-2xl py-2 px-4 text-center">
         <p className="text-white font-black text-xs" style={{ fontFamily: 'Playfair Display, serif' }}>Happy Birthday ❤️</p>
-        <p className="text-red-200 text-[9px]">7 September • selalu di hatiku</p>
+        <p className="text-red-200 text-[9px]">7 September 2026 • selalu di hatiku</p>
       </div>
     </div>
   );
@@ -538,25 +538,25 @@ function CoverSlide({ onOpen }) {
         >
           <span className="text-lg">❤️</span>
           <div>
-            <p className="text-[10px] text-red-800 font-semibold tracking-wider uppercase">Hari Spesialmu</p>
-            <p className="text-red-900 font-bold text-xs" style={{ fontFamily: 'Playfair Display, serif' }}>7 September</p>
+            <p className="text-[10px] text-red-800 font-semibold tracking-wider uppercase">Hari Spesial Endutt</p>
+            <p className="text-red-900 font-bold text-xs" style={{ fontFamily: 'Playfair Display, serif' }}>7 September 2026</p>
           </div>
         </motion.div>
       </Pop>
       <div className="flex flex-col flex-1 px-6 pt-4 pb-10 justify-center">
-        <Pop delay={0.05}><p className="text-[10px] tracking-[0.4em] uppercase text-red-500 font-semibold mb-3">Sebuah ucapan untukmu</p></Pop>
+        <Pop delay={0.05}><p className="text-[10px] tracking-[0.4em] uppercase text-red-500 font-semibold mb-3">Sebuah ucapan untuk endutku</p></Pop>
         <Pop delay={0.13}>
           <h1 className="text-5xl font-black leading-tight text-red-950 mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
             Happy<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-700 to-red-900">Birthday</span>
           </h1>
         </Pop>
-        <Pop delay={0.21}><p className="text-gray-500 text-[15px] font-light leading-relaxed mb-8">Untuk seseorang yang mengisi hari-hariku dengan cahaya dan kebahagiaan yang tak ternilai</p></Pop>
+        <Pop delay={0.21}><p className="text-gray-500 text-[15px] font-light leading-relaxed mb-8">Untuk endut yang mengisi hari-hariku dengan cahaya dan kebahagiaan yang tak ternilai</p></Pop>
         <Pop delay={0.29}>
           <motion.button
             whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.93 }} onClick={onOpen}
             className="self-start flex items-center gap-2 px-8 py-4 bg-red-900 text-white rounded-full text-sm font-bold tracking-wide shadow-lg shadow-red-900/30">
-            <span>Buka Pesan Untukmu</span><span>❤️</span>
+            <span>Pesan Buat Endut</span><span>❤️</span>
           </motion.button>
         </Pop>
       </div>
@@ -576,7 +576,7 @@ function GreetingSlide() {
             <div key={i} className="absolute text-white text-5xl" style={{ left: `${i * 25}%`, top: `${(i * 37) % 80}%` }}>❤️</div>
           ))}
         </div>
-        <p className="text-red-300 text-[10px] tracking-[0.4em] uppercase font-semibold mb-2">Untuk kamu</p>
+        <p className="text-red-300 text-[10px] tracking-[0.4em] uppercase font-semibold mb-2">Untuk endut</p>
         <h2 className="text-white text-4xl font-black leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
           Hari ini adalah<br /><span className="italic text-red-300">hari yang sangat</span><br />istimewa
         </h2>
@@ -608,7 +608,7 @@ function GreetingSlide() {
 
       <div className="px-6 pb-10 flex-1">
         <Pop delay={0.08} className="h-px bg-gradient-to-r from-red-200 to-transparent mb-6" />
-        <Pop delay={0.16}><p className="text-gray-600 text-[15px] leading-[1.85] font-light">Sebuah ucapan kecil dariku, untuk kamu yang luar biasa. Semoga kamu selalu dikelilingi kebahagiaan di setiap langkahmu.</p></Pop>
+        <Pop delay={0.16}><p className="text-gray-600 text-[15px] leading-[1.85] font-light">Selamat ulang tahun ndutt, buat endut yang jauh disana. Semoga endut selalu dikelilingi kebahagiaan di setiap langkahmu.</p></Pop>
         <Pop delay={0.24} className="mt-6 flex items-center gap-2">
           <span className="text-red-900 font-bold text-sm" style={{ fontFamily: 'Playfair Display, serif' }}>— dengan cinta</span>
           <span>❤️</span>
@@ -623,7 +623,7 @@ function GreetingSlide() {
 // ═══════════════════════════════════════════════
 function LetterSlide() {
   const paragraphs = [
-    { text: 'Hei, kamu yang selalu ada di pikiranku...', style: 'italic' },
+    { text: 'Aloo, endut yang selalu buat aku ovt', style: 'italic' },
     { text: 'Di hari ulang tahunmu ini, aku ingin kamu tahu betapa berartinya kehadiranmu di hidupku. Kamu adalah cahaya yang selalu bersinar, bahkan di hari-hari paling mendung sekalipun.', style: 'normal' },
     { text: 'Terima kasih sudah selalu jadi dirimu sendiri. Selalu jujur, selalu hangat, dan selalu membuat setiap momen terasa lebih berarti. Dunia ini jauh lebih indah karena ada kamu.', style: 'normal' },
     { text: 'Semoga di usiamu yang baru ini, semua impian yang selama ini kamu simpan bisa pelan-pelan jadi nyata. Kamu layak mendapatkan yang terbaik dari hidup ini.', style: 'normal' },
@@ -714,12 +714,12 @@ function AlbumSlide() {
 // ═══════════════════════════════════════════════
 function WishesSlide() {
   const wishes = [
-    { label: 'Selalu sehat', desc: 'Semoga badanmu selalu kuat dan sehat setiap harinya.' },
-    { label: 'Bahagia selalu', desc: 'Kebahagiaan yang tulus dan abadi menyertaimu.' },
-    { label: 'Impian terwujud', desc: 'Setiap mimpimu layak untuk diperjuangkan dan diraih.' },
-    { label: 'Rezeki berlimpah', desc: 'Keberkahan hadir di setiap langkah perjalananmu.' },
-    { label: 'Dikasihi banyak', desc: 'Dikelilingi orang-orang yang sungguh menyayangimu.' },
-    { label: 'Terus berkembang', desc: 'Menjadi versi terbaik dari dirimu setiap harinya.' },
+    { label: 'Selalu sehat', desc: 'Jaga kesehatan yaa dan jangan lupa olahraga.' },
+    { label: 'Bahagia selalu', desc: 'Semoga endut selalu bahagia disana.' },
+    { label: 'Impian terwujud', desc: 'Semoga impian yang endut impikan cepat terwujud.' },
+    { label: 'Rezeki berlimpah', desc: 'Semoga endut diberi rezeki yang melimpah.' },
+    { label: 'Dikasihi banyak', desc: 'Semoga endut dikelilingi orang-orang peduli dan sayang sama endut.' },
+    { label: 'Terus berkembang', desc: 'Jangan lupa untuk terus berkembang yaa di semua aspek kehidupan.' },
   ];
   return (
     <div className="min-h-[100dvh] flex flex-col bg-white">
@@ -727,7 +727,7 @@ function WishesSlide() {
         <img src="/image/foto12.jpg" onError={safeImg} alt="Wishes" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-red-900/40 to-white" />
         <div className="absolute inset-x-0 bottom-5 px-6">
-          <p className="text-[10px] tracking-[0.4em] uppercase text-red-200 font-semibold mb-1">Doa untukmu</p>
+          <p className="text-[10px] tracking-[0.4em] uppercase text-red-200 font-semibold mb-1">Doa buat endut</p>
           <h2 className="text-white text-3xl font-black leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
             Harapan<br /><span className="italic text-red-200">yang kupanjatkan</span>
           </h2>
