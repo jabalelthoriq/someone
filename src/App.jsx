@@ -242,57 +242,63 @@ function Lightbox({ photos, index, onClose, onPrev, onNext }) {
   );
 }
 
-// ─── FRAME OVERLAY (standalone — jangan taruh di dalam component lain) ─────
+// ─── SVG OVERLAY CONTENT ───────────────────────────────────────────
+const FRAME_SVG_CONTENT = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="100%" height="100%">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Polaroid White Frame (Outer white, inner cutout for photo window) -->
+  <path d="M 0,0 L 1000,0 L 1000,1000 L 0,1000 Z M 70,70 L 70,780 L 930,780 L 930,70 Z" fill="#f8f9fa" fill-rule="evenodd" />
+
+  <!-- Subtle gray horizontal divider lines -->
+  <line x1="0" y1="70" x2="1000" y2="70" stroke="#d1d5db" stroke-width="1.5" opacity="0.6" />
+  <line x1="0" y1="780" x2="1000" y2="780" stroke="#d1d5db" stroke-width="1.5" opacity="0.6" />
+
+  <!-- Inner Photo Window Gray Outline -->
+  <rect x="70" y="70" width="860" height="710" fill="none" stroke="#9ca3af" stroke-width="3" />
+
+  <!-- Polaroid Bottom Chin Text -->
+  <text x="60" y="845" fill="#ea3840" font-family="Georgia, serif" font-weight="900" font-size="46" letter-spacing="1">Happy Birthday</text>
+  <text x="60" y="915" fill="#ea3840" font-family="Arial, sans-serif" font-weight="600" font-size="26" letter-spacing="0.5">7 September 2026 • selalu di hatiku</text>
+
+  <!-- Top-Left 3D Red Hearts (folded paper style) -->
+  <g filter="url(#shadow)">
+    <g transform="translate(45, 45) scale(0.85)">
+      <path d="M 0,-14 C -7,-24 -20,-20 -20,-8 C -20,4 -7,12 0,20 Z" fill="#bd1c24" />
+      <path d="M 0,-14 C 7,-24 20,-20 20,-8 C 20,4 7,12 0,20 Z" fill="#ea3840" />
+    </g>
+    <g transform="translate(125, 45) scale(1.4)">
+      <path d="M 0,-14 C -7,-24 -20,-20 -20,-8 C -20,4 -7,12 0,20 Z" fill="#bd1c24" />
+      <path d="M 0,-14 C 7,-24 20,-20 20,-8 C 20,4 7,12 0,20 Z" fill="#ea3840" />
+    </g>
+  </g>
+
+  <!-- Bottom-Right Dotted Red Hearts -->
+  <g filter="url(#shadow)">
+    <g transform="translate(860, 830) scale(2.0)">
+      <path d="M 0,-14 C -7,-24 -22,-20 -22,-7 C -22,6 -7,13 0,22 C 7,13 22,6 22,-7 C 22,-20 7,-24 0,-14 Z" fill="#ea3840" />
+      <path d="M 0,-11 C -5,-19 -17,-16 -17,-6 C -17,4 -5,10 0,17 C 5,10 17,4 17,-6 C 17,-16 5,-19 0,-11 Z" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-dasharray="3,2.5" />
+    </g>
+    <g transform="translate(730, 870) scale(1.2)">
+      <path d="M 0,-14 C -7,-24 -22,-20 -22,-7 C -22,6 -7,13 0,22 C 7,13 22,6 22,-7 C 22,-20 7,-24 0,-14 Z" fill="#ea3840" />
+      <path d="M 0,-11 C -5,-19 -17,-16 -17,-6 C -17,4 -5,10 0,17 C 5,10 17,4 17,-6 C 17,-16 5,-19 0,-11 Z" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-dasharray="3,2.5" />
+    </g>
+  </g>
+</svg>`;
+
+// ─── FRAME OVERLAY (standalone component) ─────────────────────────
 function FrameOverlay() {
   return (
     <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-      {/* Polaroid Outer White Bars */}
-      <div className="absolute top-0 left-0 right-0 h-[7%] bg-[#f8f9fa] border-b border-gray-300/40" />
-      <div className="absolute top-[7%] bottom-[22%] left-0 w-[7%] bg-[#f8f9fa]" />
-      <div className="absolute top-[7%] bottom-[22%] right-0 w-[7%] bg-[#f8f9fa]" />
-      
-      {/* Polaroid Bottom White Chin with Text */}
-      <div className="absolute bottom-0 left-0 right-0 h-[22%] bg-[#f8f9fa] flex flex-col justify-center px-6 border-t border-gray-300/50">
-        <h3 className="text-[#ea3840] font-black text-xl tracking-wide leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
-          Happy Birthday
-        </h3>
-        <p className="text-[#ea3840] text-xs font-semibold tracking-wide mt-1">
-          7 September 2026 • selalu di hatiku
-        </p>
-      </div>
-
-      {/* Inner Photo Window Gray Outline */}
-      <div className="absolute top-[7%] bottom-[22%] left-[7%] right-[7%] border-2 border-gray-400/80 pointer-events-none" />
-
-      {/* Top-Left 3D Red Hearts (folded paper style) */}
-      <div className="absolute top-[1.5%] left-[1.5%] z-20 flex items-center pointer-events-none">
-        {/* Small 3D Heart */}
-        <svg className="w-8 h-8 -mr-2 drop-shadow-md" viewBox="-24 -24 48 48">
-          <path d="M 0,-14 C -7,-24 -20,-20 -20,-8 C -20,4 -7,12 0,20 Z" fill="#bd1c24" />
-          <path d="M 0,-14 C 7,-24 20,-20 20,-8 C 20,4 7,12 0,20 Z" fill="#ea3840" />
-        </svg>
-        {/* Big 3D Heart */}
-        <svg className="w-14 h-14 drop-shadow-lg" viewBox="-24 -24 48 48">
-          <path d="M 0,-14 C -7,-24 -20,-20 -20,-8 C -20,4 -7,12 0,20 Z" fill="#bd1c24" />
-          <path d="M 0,-14 C 7,-24 20,-20 20,-8 C 20,4 7,12 0,20 Z" fill="#ea3840" />
-        </svg>
-      </div>
-
-      {/* Bottom-Right Dotted Red Hearts */}
-      <div className="absolute bottom-[8%] right-[1%] z-20 flex items-end pointer-events-none">
-        {/* Big Dotted Heart */}
-        <svg className="w-22 h-22 drop-shadow-lg" viewBox="-26 -26 52 52">
-          <path d="M 0,-14 C -7,-24 -22,-20 -22,-7 C -22,6 -7,13 0,22 C 7,13 22,6 22,-7 C 22,-20 7,-24 0,-14 Z" fill="#ea3840" />
-          <path d="M 0,-11 C -5,-19 -17,-16 -17,-6 C -17,4 -5,10 0,17 C 5,10 17,4 17,-6 C 17,-16 5,-19 0,-11 Z" 
-                fill="none" stroke="white" strokeWidth="2.5" strokeDasharray="3 2.5" />
-        </svg>
-        {/* Small Dotted Heart */}
-        <svg className="w-13 h-13 -ml-4 drop-shadow-md" viewBox="-26 -26 52 52">
-          <path d="M 0,-14 C -7,-24 -22,-20 -22,-7 C -22,6 -7,13 0,22 C 7,13 22,6 22,-7 C 22,-20 7,-24 0,-14 Z" fill="#ea3840" />
-          <path d="M 0,-11 C -5,-19 -17,-16 -17,-6 C -17,4 -5,10 0,17 C 5,10 17,4 17,-6 C 17,-16 5,-19 0,-11 Z" 
-                fill="none" stroke="white" strokeWidth="2.5" strokeDasharray="3 2.5" />
-        </svg>
-      </div>
+      <svg 
+        viewBox="0 0 1000 1000" 
+        className="w-full h-full" 
+        preserveAspectRatio="none"
+        dangerouslySetInnerHTML={{ __html: FRAME_SVG_CONTENT.replace(/<svg[^>]*>|<\/svg>/g, '') }}
+      />
     </div>
   );
 }
@@ -382,155 +388,48 @@ function LoveFrameCamera() {
     startCamera(facingMode);
   };
 
-  const draw3DHeart = (ctx, cx, cy, sz) => {
-    ctx.save();
-    ctx.translate(cx, cy);
-    const scale = sz / 40;
-    ctx.scale(scale, scale);
-
-    // Left half (Dark Red)
-    ctx.beginPath();
-    ctx.moveTo(0, -14);
-    ctx.bezierCurveTo(-7, -24, -20, -20, -20, -8);
-    ctx.bezierCurveTo(-20, 4, -7, 12, 0, 20);
-    ctx.closePath();
-    ctx.fillStyle = '#bd1c24';
-    ctx.fill();
-
-    // Right half (Light Red)
-    ctx.beginPath();
-    ctx.moveTo(0, -14);
-    ctx.bezierCurveTo(7, -24, 20, -20, 20, -8);
-    ctx.bezierCurveTo(20, 4, 7, 12, 0, 20);
-    ctx.closePath();
-    ctx.fillStyle = '#ea3840';
-    ctx.fill();
-
-    ctx.restore();
-  };
-
-  const drawDottedHeart = (ctx, cx, cy, sz) => {
-    ctx.save();
-    ctx.translate(cx, cy);
-    const scale = sz / 44;
-    ctx.scale(scale, scale);
-
-    // Red Heart Base
-    ctx.beginPath();
-    ctx.moveTo(0, -14);
-    ctx.bezierCurveTo(-7, -24, -22, -20, -22, -7);
-    ctx.bezierCurveTo(-22, 6, -7, 13, 0, 22);
-    ctx.bezierCurveTo(7, 13, 22, 6, 22, -7);
-    ctx.bezierCurveTo(22, -20, 7, -24, 0, -14);
-    ctx.closePath();
-    ctx.fillStyle = '#ea3840';
-    ctx.fill();
-
-    // Inner Dotted White Line
-    ctx.beginPath();
-    ctx.moveTo(0, -11);
-    ctx.bezierCurveTo(-5, -19, -17, -16, -17, -6);
-    ctx.bezierCurveTo(-17, 4, -5, 10, 0, 17);
-    ctx.bezierCurveTo(5, 10, 17, 4, 17, -6);
-    ctx.bezierCurveTo(17, -16, 5, -19, 0, -11);
-    ctx.closePath();
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 2.5;
-    ctx.setLineDash([3, 2.5]);
-    ctx.stroke();
-
-    ctx.restore();
-  };
-
-  const drawFrameOnCanvas = (ctx, w, h) => {
-    // 1. Temporarily save original captured photo content (1:1 full resolution)
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = w;
-    tempCanvas.height = h;
-    const tempCtx = tempCanvas.getContext('2d');
-    tempCtx.drawImage(ctx.canvas, 0, 0);
-
-    // 2. Clear canvas and fill with Polaroid white background (#f8f9fa)
-    ctx.fillStyle = '#f8f9fa';
-    ctx.fillRect(0, 0, w, h);
-
-    // 3. Draw photo into inner window (exact same 1:1 sub-crop as live screen overlay)
-    const wx = w * 0.07;
-    const wy = h * 0.07;
-    const ww = w * 0.86;
-    const wh = h * 0.71;
-    ctx.drawImage(tempCanvas, wx, wy, ww, wh, wx, wy, ww, wh);
-
-    // 4. Subtle gray border line above chin and below top bar
-    ctx.strokeStyle = 'rgba(209, 213, 219, 0.5)';
-    ctx.lineWidth = Math.max(1, w * 0.0015);
-    ctx.beginPath();
-    ctx.moveTo(0, wy);
-    ctx.lineTo(w, wy);
-    ctx.moveTo(0, wy + wh);
-    ctx.lineTo(w, wy + wh);
-    ctx.stroke();
-
-    // 5. Inner gray outline around photo window
-    ctx.strokeStyle = '#9ca3af';
-    ctx.lineWidth = Math.max(2, w * 0.0035);
-    ctx.strokeRect(wx, wy, ww, wh);
-
-    // 6. Polaroid Bottom Text (matching typography and alignment)
-    const chinY = wy + wh;
-    const chinH = h - chinY;
-
-    ctx.fillStyle = '#ea3840';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'top';
-    ctx.font = `900 ${h * 0.046}px Georgia, serif`;
-    ctx.fillText('Happy Birthday', w * 0.06, chinY + chinH * 0.28);
-
-    ctx.fillStyle = '#ea3840';
-    ctx.font = `600 ${h * 0.026}px Arial, sans-serif`;
-    ctx.fillText('7 September 2026 • selalu di hatiku', w * 0.06, chinY + chinH * 0.62);
-
-    // 7. Top-Left 3D Hearts (exact matching positions as screen overlay)
-    draw3DHeart(ctx, w * 0.045, h * 0.045, w * 0.08);
-    draw3DHeart(ctx, w * 0.12, h * 0.045, w * 0.14);
-
-    // 8. Bottom-Right Dotted Hearts (exact matching positions as screen overlay)
-    drawDottedHeart(ctx, w * 0.86, h * 0.83, w * 0.22);
-    drawDottedHeart(ctx, w * 0.72, h * 0.87, w * 0.13);
-  };
-
   const handleDownload = () => {
     if (!photoData) return;
     setDownloading(true);
+
     const canvas = canvasRef.current;
-    const img = new Image();
-    img.onload = () => {
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      drawFrameOnCanvas(ctx, canvas.width, canvas.height);
+    const size = 1000;
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
 
-      canvas.toBlob(blob => {
-        if (!blob) { setDownloading(false); return; }
-        const url = URL.createObjectURL(blob);
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const photoImg = new Image();
+    photoImg.onload = () => {
+      // 1. Draw 1:1 photo to canvas
+      ctx.drawImage(photoImg, 0, 0, size, size);
 
-        if (isIOS || isSafari) {
-          // Safari doesn't support download attr — show image for long-press save
-          setSavedUrl(url);
-        } else {
-          const link = document.createElement('a');
-          link.href = url; link.download = 'birthday-love-frame.jpg';
-          document.body.appendChild(link); link.click(); document.body.removeChild(link);
-          setTimeout(() => URL.revokeObjectURL(url), 3000);
-        }
-        setDownloading(false);
-      }, 'image/jpeg', 0.92);
+      // 2. Draw identical SVG frame overlay on top
+      const frameImg = new Image();
+      frameImg.onload = () => {
+        ctx.drawImage(frameImg, 0, 0, size, size);
+
+        canvas.toBlob(blob => {
+          if (!blob) { setDownloading(false); return; }
+          const url = URL.createObjectURL(blob);
+          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+          if (isIOS || isSafari) {
+            setSavedUrl(url);
+          } else {
+            const link = document.createElement('a');
+            link.href = url; link.download = 'birthday-love-frame.jpg';
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 3000);
+          }
+          setDownloading(false);
+        }, 'image/jpeg', 0.92);
+      };
+      frameImg.onerror = () => setDownloading(false);
+      frameImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(FRAME_SVG_CONTENT);
     };
-    img.onerror = () => setDownloading(false);
-    img.src = photoData;
+    photoImg.onerror = () => setDownloading(false);
+    photoImg.src = photoData;
   };
 
   // iOS save modal
