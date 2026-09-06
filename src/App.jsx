@@ -4,7 +4,7 @@ import { Music, Pause, Play, X, ChevronLeft, ChevronRight, Download, RefreshCw, 
 
 // ─── TARGET DATE ───────────────────────────────────────────────────
 // ✅ Set waktu target: 6 September 2026, pukul 16:22 WIB (UTC+7)
-const TARGET_TIME = new Date('2026-09-06T16:26:00+07:00');
+const TARGET_TIME = new Date('2026-09-06T16:35:00+07:00');
 
 function getTargetDate() {
   const now = new Date();
